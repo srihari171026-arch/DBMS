@@ -1,0 +1,98 @@
+-- 1. CREATE TABLE
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Salary NUMBER,
+    JoinDate DATE
+);
+
+-- 2. INSERT DATA
+INSERT INTO Employees VALUES (1, 'ravi kumar', 50000, TO_DATE('2023-01-15','YYYY-MM-DD'));
+INSERT INTO Employees VALUES (2, 'sita devi', 40000, TO_DATE('2022-06-10','YYYY-MM-DD'));
+
+--------------------------------------------------
+-- 3. CONVERSION FUNCTIONS
+
+-- TO_CHAR (date to string)
+SELECT TO_CHAR(JoinDate, 'DD-MM-YYYY') FROM Employees;
+
+-- TO_CHAR (number to string)
+SELECT TO_CHAR(Salary) FROM Employees;
+
+-- TO_NUMBER
+SELECT TO_NUMBER('12345') FROM dual;
+
+-- TO_DATE
+SELECT TO_DATE('2024-12-25','YYYY-MM-DD') FROM dual;
+
+--------------------------------------------------
+-- 4. STRING FUNCTIONS
+
+-- CONCATENATION
+SELECT Name || ' - Employee' FROM Employees;
+
+-- LPAD
+SELECT LPAD(Name, 15, '*') FROM Employees;
+
+-- RPAD
+SELECT RPAD(Name, 15, '*') FROM Employees;
+
+-- LTRIM
+SELECT LTRIM('   Hello') FROM dual;
+
+-- RTRIM
+SELECT RTRIM('Hello   ') FROM dual;
+
+-- LOWER
+SELECT LOWER(Name) FROM Employees;
+
+-- UPPER
+SELECT UPPER(Name) FROM Employees;
+
+-- INITCAP
+SELECT INITCAP(Name) FROM Employees;
+
+-- LENGTH
+SELECT LENGTH(Name) FROM Employees;
+
+-- SUBSTR
+SELECT SUBSTR(Name, 1, 4) FROM Employees;
+
+-- INSTR
+SELECT INSTR(Name, 'kumar') FROM Employees;
+
+--------------------------------------------------
+-- 5. DATE FUNCTIONS
+
+-- SYSDATE
+SELECT SYSDATE FROM dual;
+
+-- NEXT_DAY
+SELECT NEXT_DAY(SYSDATE, 'SUNDAY') FROM dual;
+
+-- ADD_MONTHS
+SELECT ADD_MONTHS(SYSDATE, 3) FROM dual;
+
+-- LAST_DAY
+SELECT LAST_DAY(SYSDATE) FROM dual;
+
+-- MONTHS_BETWEEN
+SELECT MONTHS_BETWEEN(SYSDATE, JoinDate) FROM Employees;
+
+-- LEAST
+SELECT LEAST(10, 20, 5) FROM dual;
+
+-- GREATEST
+SELECT GREATEST(10, 20, 5) FROM dual;
+
+-- TRUNC (date)
+SELECT TRUNC(SYSDATE) FROM dual;
+
+-- ROUND (date)
+SELECT ROUND(SYSDATE) FROM dual;
+
+-- TO_CHAR (date formatting)
+SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY') FROM dual;
+
+-- TO_DATE
+SELECT TO_DATE('01-JAN-2025','DD-MON-YYYY') FROM dual;
