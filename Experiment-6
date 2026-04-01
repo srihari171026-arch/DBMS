@@ -1,0 +1,56 @@
+
+DECLARE
+    v_marks NUMBER := 75;
+    v_grade VARCHAR2(10);
+    v_result VARCHAR2(20);
+    v_bonus NUMBER := NULL;
+BEGIN
+    --------------------------------------------------
+    -- 1. NESTED IF
+
+    IF v_marks >= 60 THEN
+        IF v_marks >= 75 THEN
+            DBMS_OUTPUT.PUT_LINE('First Class with Distinction');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('First Class');
+        END IF;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Second Class / Fail');
+    END IF;
+
+    --------------------------------------------------
+    -- 2. CASE STATEMENT
+
+    CASE 
+        WHEN v_marks >= 75 THEN
+            v_grade := 'A';
+        WHEN v_marks >= 60 THEN
+            v_grade := 'B';
+        ELSE
+            v_grade := 'C';
+    END CASE;
+
+    DBMS_OUTPUT.PUT_LINE('Grade: ' || v_grade);
+
+    --------------------------------------------------
+    -- 3. CASE EXPRESSION
+
+    v_result := CASE
+                    WHEN v_marks >= 60 THEN 'PASS'
+                    ELSE 'FAIL'
+                END;
+
+    DBMS_OUTPUT.PUT_LINE('Result: ' || v_result);
+
+    --------------------------------------------------
+    -- 4. NULLIF
+
+    DBMS_OUTPUT.PUT_LINE('NULLIF Example: ' || NULLIF(v_marks, 75));
+
+    --------------------------------------------------
+    -- 5. COALESCE
+
+    DBMS_OUTPUT.PUT_LINE('COALESCE Example: ' || COALESCE(v_bonus, 1000));
+
+END;
+/
