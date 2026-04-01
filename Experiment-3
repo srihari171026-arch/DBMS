@@ -1,0 +1,66 @@
+-- 1. CREATE TABLE
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Department VARCHAR(50),
+    Salary INT
+);
+
+-- 2. INSERT DATA
+INSERT INTO Employees VALUES
+(1, 'Ravi', 'IT', 50000),
+(2, 'Sita', 'HR', 40000),
+(3, 'Arjun', 'IT', 60000),
+(4, 'Kiran', 'HR', 45000),
+(5, 'Meena', 'IT', 55000);
+
+--------------------------------------------------
+-- 3. AGGREGATE FUNCTIONS
+
+-- COUNT
+SELECT COUNT(*) AS TotalEmployees FROM Employees;
+
+-- SUM
+SELECT SUM(Salary) AS TotalSalary FROM Employees;
+
+-- AVG
+SELECT AVG(Salary) AS AverageSalary FROM Employees;
+
+-- MAX
+SELECT MAX(Salary) AS HighestSalary FROM Employees;
+
+-- MIN
+SELECT MIN(Salary) AS LowestSalary FROM Employees;
+
+--------------------------------------------------
+-- 4. GROUP BY
+
+-- Department-wise total salary
+SELECT Department, SUM(Salary) AS TotalSalary
+FROM Employees
+GROUP BY Department;
+
+--------------------------------------------------
+-- 5. HAVING
+
+-- Departments with total salary > 100000
+SELECT Department, SUM(Salary) AS TotalSalary
+FROM Employees
+GROUP BY Department
+HAVING SUM(Salary) > 100000;
+
+--------------------------------------------------
+-- 6. CREATE VIEW
+
+CREATE VIEW IT_Employees AS
+SELECT Name, Salary
+FROM Employees
+WHERE Department = 'IT';
+
+-- View data
+SELECT * FROM IT_Employees;
+
+--------------------------------------------------
+-- 7. DROP VIEW
+
+DROP VIEW IT_Employees;
