@@ -1,0 +1,41 @@
+-- 1. CREATE TABLE with constraints
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Age INT CHECK (Age >= 18),
+    Email VARCHAR(100) UNIQUE
+);
+
+-- 2. INSERT rows into table
+INSERT INTO Students (StudentID, Name, Age, Email)
+VALUES 
+(1, 'Ravi', 20, 'ravi@gmail.com'),
+(2, 'Sita', 22, 'sita@gmail.com'),
+(3, 'Arjun', 19, 'arjun@gmail.com');
+
+-- 3. SELECT command (view data)
+SELECT * FROM Students;
+
+-- SELECT specific columns
+SELECT Name, Age FROM Students;
+
+-- SELECT with condition
+SELECT * FROM Students WHERE Age > 20;
+
+-- 4. ALTER TABLE (add new column)
+ALTER TABLE Students
+ADD Course VARCHAR(50);
+
+-- Update values in new column
+UPDATE Students SET Course = 'CSE' WHERE StudentID = 1;
+UPDATE Students SET Course = 'ECE' WHERE StudentID = 2;
+
+-- View updated table
+SELECT * FROM Students;
+
+-- 5. ALTER TABLE (modify column - syntax may vary)
+-- For MySQL:
+ALTER TABLE Students MODIFY Name VARCHAR(100);
+
+-- 6. DROP TABLE (delete table)
+DROP TABLE Students;
