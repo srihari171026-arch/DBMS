@@ -1,0 +1,67 @@
+-- 1. CREATE TABLE
+CREATE TABLE Students (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR2(50),
+    Marks INT
+);
+
+-- 2. INSERT DATA
+INSERT INTO Students VALUES (1, 'Ravi', 75);
+INSERT INTO Students VALUES (2, 'Sita', 85);
+INSERT INTO Students VALUES (3, 'Arjun', 55);
+
+--------------------------------------------------
+-- 3. SIMPLE FUNCTION (returns grade)
+
+CREATE OR REPLACE FUNCTION GetGrade(p_marks NUMBER)
+RETURN VARCHAR2
+IS
+BEGIN
+    IF p_marks >= 75 THEN
+        RETURN 'A';
+    ELSIF p_marks >= 60 THEN
+        RETURN 'B';
+    ELSE
+        RETURN 'C';
+    END IF;
+END;
+/
+
+--------------------------------------------------
+-- 4. CALL FUNCTION IN SQL
+
+SELECT Name, Marks, GetGrade(Marks) AS Grade
+FROM Students;
+
+--------------------------------------------------
+-- 5. COMPLEX FUNCTION (returns result PASS/FAIL)
+
+CREATE OR REPLACE FUNCTION GetResult(p_rollno NUMBER)
+RETURN VARCHAR2
+IS
+    v_marks NUMBER;
+    v_result VARCHAR2(10);
+BEGIN
+    SELECT Marks INTO v_marks
+    FROM Students
+    WHERE RollNo = p_rollno;
+
+    IF v_marks >= 60 THEN
+        v_result := 'PASS';
+    ELSE
+        v_result := 'FAIL';
+    END IF;
+
+    RETURN v_result;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN 'Student Not Found';
+END;
+/
+
+--------------------------------------------------
+-- 6. CALL COMPLEX FUNCTION
+
+SELECT RollNo, Name, GetResult(RollNo) AS Result
+FROM Students;
