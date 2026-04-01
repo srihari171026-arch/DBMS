@@ -1,0 +1,73 @@
+-- 1. CREATE TABLE
+CREATE TABLE Students (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR2(50),
+    Marks INT
+);
+
+--------------------------------------------------
+-- 2. BEFORE INSERT (ROW LEVEL TRIGGER)
+
+CREATE OR REPLACE TRIGGER trg_before_insert
+BEFORE INSERT ON Students
+FOR EACH ROW
+BEGIN
+    -- Set default marks if NULL
+    IF :NEW.Marks IS NULL THEN
+        :NEW.Marks := 0;
+    END IF;
+END;
+/
+
+--------------------------------------------------
+-- 3. AFTER INSERT (ROW LEVEL TRIGGER)
+
+CREATE OR REPLACE TRIGGER trg_after_insert
+AFTER INSERT ON Students
+FOR EACH ROW
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Inserted: ' || :NEW.Name);
+END;
+/
+
+--------------------------------------------------
+-- 4. STATEMENT LEVEL TRIGGER
+
+CREATE OR REPLACE TRIGGER trg_statement
+AFTER INSERT ON Students
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Insert operation completed');
+END;
+/
+
+--------------------------------------------------
+-- 5. VIEW FOR INSTEAD OF TRIGGER
+
+CREATE VIEW Student_View AS
+SELECT RollNo, Name FROM Students;
+
+--------------------------------------------------
+-- 6. INSTEAD OF TRIGGER
+
+CREATE OR REPLACE TRIGGER trg_instead_of
+INSTEAD OF INSERT ON Student_View
+FOR EACH ROW
+BEGIN
+    INSERT INTO Students (RollNo, Name, Marks)
+    VALUES (:NEW.RollNo, :NEW.Name, 50);
+END;
+/
+
+--------------------------------------------------
+-- 7. TESTING
+
+-- Insert into base table
+INSERT INTO Students VALUES (1, 'Ravi', NULL);
+
+-- Insert using view (INSTEAD OF trigger works)
+INSERT INTO Student_View VALUES (2, 'Sita');
+
+COMMIT;
+
+-- View data
+SELECT * FROM Students;
