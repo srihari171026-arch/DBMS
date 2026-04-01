@@ -1,0 +1,69 @@
+DECLARE
+    i NUMBER := 1;
+    j NUMBER;
+
+    -- User-defined exception
+    ex_negative EXCEPTION;
+
+    v_num NUMBER := -5;
+
+BEGIN
+    --------------------------------------------------
+    -- 1. WHILE LOOP
+
+    WHILE i <= 3 LOOP
+        DBMS_OUTPUT.PUT_LINE('WHILE Loop i = ' || i);
+        i := i + 1;
+    END LOOP;
+
+    --------------------------------------------------
+    -- 2. NUMERIC FOR LOOP
+
+    FOR k IN 1..3 LOOP
+        DBMS_OUTPUT.PUT_LINE('FOR Loop k = ' || k);
+    END LOOP;
+
+    --------------------------------------------------
+    -- 3. NESTED LOOP
+
+    FOR x IN 1..2 LOOP
+        FOR y IN 1..2 LOOP
+            DBMS_OUTPUT.PUT_LINE('Nested Loop x=' || x || ' y=' || y);
+        END LOOP;
+    END LOOP;
+
+    --------------------------------------------------
+    -- 4. USER-DEFINED EXCEPTION
+
+    IF v_num < 0 THEN
+        RAISE ex_negative;
+    END IF;
+
+    --------------------------------------------------
+    -- 5. BUILT-IN EXCEPTION (Division by zero)
+
+    DECLARE
+        a NUMBER := 10;
+        b NUMBER := 0;
+        c NUMBER;
+    BEGIN
+        c := a / b; -- causes ZERO_DIVIDE
+    END;
+
+EXCEPTION
+    --------------------------------------------------
+    -- Handle user-defined exception
+    WHEN ex_negative THEN
+        DBMS_OUTPUT.PUT_LINE('Negative number not allowed');
+
+    --------------------------------------------------
+    -- Handle built-in exception
+    WHEN ZERO_DIVIDE THEN
+        DBMS_OUTPUT.PUT_LINE('Cannot divide by zero');
+
+    --------------------------------------------------
+    -- Raise application error
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Some error occurred');
+END;
+/
