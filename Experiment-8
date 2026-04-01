@@ -1,0 +1,41 @@
+-- 1. CREATE TABLE
+CREATE TABLE Students (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR2(50),
+    Marks INT
+);
+
+-- 2. INSERT DATA
+INSERT INTO Students VALUES (1, 'Ravi', 75);
+INSERT INTO Students VALUES (2, 'Sita', 85);
+
+--------------------------------------------------
+-- 3. CREATE PROCEDURE (IN & OUT PARAMETERS)
+
+CREATE OR REPLACE PROCEDURE GetStudentDetails (
+    p_rollno IN Students.RollNo%TYPE,
+    p_name OUT Students.Name%TYPE,
+    p_marks OUT Students.Marks%TYPE
+)
+IS
+BEGIN
+    SELECT Name, Marks
+    INTO p_name, p_marks
+    FROM Students
+    WHERE RollNo = p_rollno;
+END;
+/
+
+--------------------------------------------------
+-- 4. CALL PROCEDURE
+
+DECLARE
+    v_name Students.Name%TYPE;
+    v_marks Students.Marks%TYPE;
+BEGIN
+    GetStudentDetails(1, v_name, v_marks);
+
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_name);
+    DBMS_OUTPUT.PUT_LINE('Marks: ' || v_marks);
+END;
+/
