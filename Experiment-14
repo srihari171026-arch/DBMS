@@ -1,0 +1,34 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class JDBCInsertExample {
+    public static void main(String[] args) {
+        try {
+            // 1. Load Driver
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+
+            // 2. Establish Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe",
+                "system",
+                "password"
+            );
+
+            // 3. Create Statement
+            Statement stmt = con.createStatement();
+
+            // 4. Execute Insert Query
+            String query = "INSERT INTO Students VALUES (4, 'Kiran', 90)";
+            stmt.executeUpdate(query);
+
+            System.out.println("Record Inserted Successfully");
+
+            // 5. Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
