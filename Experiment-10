@@ -1,0 +1,92 @@
+-- 1. CREATE TABLE
+CREATE TABLE Students (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR2(50),
+    Marks INT
+);
+
+-- 2. INSERT DATA
+INSERT INTO Students VALUES (1, 'Ravi', 70);
+INSERT INTO Students VALUES (2, 'Sita', 85);
+INSERT INTO Students VALUES (3, 'Arjun', 60);
+
+COMMIT;
+
+--------------------------------------------------
+-- 3. COMPLETE PL/SQL BLOCK
+
+DECLARE
+    --------------------------------------------------
+    -- Cursor with parameter
+    CURSOR c1(p_marks NUMBER) IS
+        SELECT RollNo, Name, Marks
+        FROM Students
+        WHERE Marks > p_marks;
+
+    --------------------------------------------------
+    -- FOR UPDATE cursor
+    CURSOR c2 IS
+        SELECT RollNo, Marks
+        FROM Students
+        FOR UPDATE;
+
+    --------------------------------------------------
+    -- REF CURSOR (cursor variable)
+    TYPE ref_cursor IS REF CURSOR;
+    c3 ref_cursor;
+
+    --------------------------------------------------
+    -- Variables
+    v_roll Students.RollNo%TYPE;
+    v_name Students.Name%TYPE;
+    v_marks Students.Marks%TYPE;
+
+BEGIN
+    --------------------------------------------------
+    -- 1. Cursor with parameter
+    DBMS_OUTPUT.PUT_LINE('--- Cursor with Parameter ---');
+
+    OPEN c1(65);
+    LOOP
+        FETCH c1 INTO v_roll, v_name, v_marks;
+        EXIT WHEN c1%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE(v_name || ' ' || v_marks);
+    END LOOP;
+    CLOSE c1;
+
+    --------------------------------------------------
+    -- 2. FOR UPDATE + WHERE CURRENT OF
+    DBMS_OUTPUT.PUT_LINE('--- Updating Marks ---');
+
+    OPEN c2;
+    LOOP
+        FETCH c2 INTO v_roll, v_marks;
+        EXIT WHEN c2%NOTFOUND;
+
+        UPDATE Students
+        SET Marks = Marks + 5
+        WHERE CURRENT OF c2;
+    END LOOP;
+    CLOSE c2;
+
+    COMMIT;
+
+    --------------------------------------------------
+    -- 3. REF CURSOR
+    DBMS_OUTPUT.PUT_LINE('--- REF CURSOR OUTPUT ---');
+
+    OPEN c3 FOR
+        SELECT RollNo, Name, Marks FROM Students;
+
+    LOOP
+        FETCH c3 INTO v_roll, v_name, v_marks;
+        EXIT WHEN c3%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE(v_name || ' ' || v_marks);
+    END LOOP;
+
+    CLOSE c3;
+
+END;
+/
